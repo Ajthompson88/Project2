@@ -1,4 +1,4 @@
-# Private Eye For Job Seekers
+# Private Eye 
 
 
 ## Description
@@ -13,15 +13,18 @@
 - [Questions](#Questions)
         
 ## Installation
-Here are the npm packages you will need.
- 1. Install npm
+Here are the npm packages you will need to set up the application.
+ 1. Install sequalize
    ```sh
-   npm i 
+   npm i --save sequalize
    ```
-2. Install npm 
+2. Install bcrypt
    ```sh
-   npm i 
-   ```
+   npm i bcrypt
+
+3. Install react-router-dom
+    ```sh
+    npm i react-router-dom
 
 ## Usage
 
