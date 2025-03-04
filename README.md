@@ -26,6 +26,10 @@ Here are the npm packages you will need to set up the application.
     ```sh
     npm i react-router-dom
 
+4. Intall react-bootstrap bootstrap
+    ```sh
+    npm i react-bootstrap bootstrap
+
 ## Usage
 
 
