@@ -1,4 +1,4 @@
-# Private Eye For Job Seekers
+# Private Eye -Job Application Tracker-
 
 
 ## Description
