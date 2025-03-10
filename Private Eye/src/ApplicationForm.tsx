@@ -1,48 +1,47 @@
 import React, { useState } from 'react';
 
+export interface Application {
+  id: number;
+  company: string;
+  jobTitle: string;
+  status: string;
+  dateApplied: string;
+}
+
 const ApplicationForm: React.FC = () => {
   const [company, setCompany] = useState('');
-  const [position, setPosition] = useState('');
+  const [jobTitle, setJobTitle] = useState('');
   const [status, setStatus] = useState('');
-  const [appliedDate, setAppliedDate] = useState('');
+  const [dateApplied, setDateApplied] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newApplication = {
+    const newApplication: Application = {
+      id: Date.now(), // Generate a unique ID based on timestamp
       company,
-      position,
+      jobTitle,
       status,
-      applied_date: appliedDate, // use the field names expected by your SQL table
+      dateApplied,
     };
 
-    try {
-      const response = await fetch('/api/applications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newApplication)
-      });
+    // Retrieve any existing applications from localStorage
+    const storedApps = localStorage.getItem('applications');
+    let applications: Application[] = storedApps ? JSON.parse(storedApps) : [];
 
-      if (response.ok) {
-        alert('Application added successfully!');
-        // Clear the form
-        setCompany('');
-        setPosition('');
-        setStatus('');
-        setAppliedDate('');
-      } else {
-        alert('Failed to add application.');
-      }
-    } catch (error) {
-      console.error('Error adding application:', error);
-      alert('Error adding application.');
-    }
+    // Add the new application and store the updated list
+    applications.push(newApplication);
+    localStorage.setItem('applications', JSON.stringify(applications));
+
+    // Clear the form fields
+    setCompany('');
+    setJobTitle('');
+    setStatus('');
+    setDateApplied('');
   };
 
   return (
-    <div>
+    <div className="application-form">
       <h2>Add Application</h2>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
@@ -55,11 +54,11 @@ const ApplicationForm: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label>Position:</label>
+          <label>Job Title:</label>
           <input
             type="text"
-            value={position}
-            onChange={(e) => setPosition(e.target.value)}
+            value={jobTitle}
+            onChange={(e) => setJobTitle(e.target.value)}
             required
           />
         </div>
@@ -73,15 +72,15 @@ const ApplicationForm: React.FC = () => {
           />
         </div>
         <div className="form-group">
-          <label>Applied Date:</label>
+          <label>Date Applied:</label>
           <input
             type="date"
-            value={appliedDate}
-            onChange={(e) => setAppliedDate(e.target.value)}
+            value={dateApplied}
+            onChange={(e) => setDateApplied(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Add Application</button>
+        <button type="submit">Submit Application</button>
       </form>
     </div>
   );

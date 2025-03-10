@@ -1,10 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { Application } from './ApplicationForm';
 
 const Applications: React.FC = () => {
+  const [applications, setApplications] = useState<Application[]>([]);
+
+  useEffect(() => {
+    const storedApps = localStorage.getItem('applications');
+    if (storedApps) {
+      setApplications(JSON.parse(storedApps));
+    }
+  }, []);
+
   return (
-    <div>
+    <div className="applications-page">
       <h2>Applications</h2>
-      <p>Here you can view and manage job applications.</p>
+      {applications.length === 0 ? (
+        <p>No applications submitted yet.</p>
+      ) : (
+        <ul className="applications-list">
+          {applications.map((app) => (
+            <li key={app.id} className="application-item">
+              <strong>{app.company}</strong> — {app.jobTitle} — {app.status} (Applied: {app.dateApplied})
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 };
