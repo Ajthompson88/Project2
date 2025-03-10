@@ -3,8 +3,8 @@ import { pool } from '../../config/connections';
 
 const router = express.Router();
 
-// Existing GET route to fetch applications...
-router.get('/applications', async (req: Request, res: Response) => {
+// GET /api/applications - Retrieve all job applications
+router.get('/', async (req: Request, res: Response) => {
   try {
     const result = await pool.query('SELECT * FROM applications ORDER BY applied_date DESC');
     res.json(result.rows);
@@ -14,8 +14,8 @@ router.get('/applications', async (req: Request, res: Response) => {
   }
 });
 
-// New POST endpoint to add an application
-router.post('/applications', async (req: Request, res: Response) => {
+// POST /api/applications - Add a new job application
+router.post('/', async (req: Request, res: Response) => {
   try {
     const { company, position, status, applied_date } = req.body;
     const result = await pool.query(
