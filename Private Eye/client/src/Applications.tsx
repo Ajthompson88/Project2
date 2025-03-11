@@ -3,14 +3,23 @@ import { useState, useEffect } from 'react';
 import { Application } from './ApplicationForm';
 
 const Applications: React.FC = () => {
-  const [applications, setApplications] = useState<Application[]>([]);
-
-  useEffect(() => {
+  const [applications, setApplications] = useState<Application[]>(() => {
     const storedApps = localStorage.getItem('applications');
-    if (storedApps) {
-      setApplications(JSON.parse(storedApps));
-    }
-  }, []);
+    return storedApps ? JSON.parse(storedApps) : [];
+  });
+
+  // Whenever applications change, update localStorage
+  useEffect(() => {
+    localStorage.setItem('applications', JSON.stringify(applications));
+  }, [applications]);
+
+  // Function to handle status updates
+  const handleStatusChange = (id: number, newStatus: string) => {
+    const updatedApps = applications.map((app) =>
+      app.id === id ? { ...app, status: newStatus } : app
+    );
+    setApplications(updatedApps);
+  };
 
   return (
     <div className="applications-page">
@@ -21,7 +30,16 @@ const Applications: React.FC = () => {
         <ul className="applications-list">
           {applications.map((app) => (
             <li key={app.id} className="application-item">
-              <strong>{app.company}</strong> — {app.jobTitle} — {app.status} (Applied: {app.dateApplied})
+              <strong>{app.company}</strong> – {app.jobTitle} –{' '}
+              <select
+                value={app.status}
+                onChange={(e) => handleStatusChange(app.id, e.target.value)}
+              >
+                <option value="pending">Pending</option>
+                <option value="denied">Application Denied</option>
+                <option value="offer received">Offer Received</option>
+              </select>{' '}
+              (Applied: {app.dateApplied})
             </li>
           ))}
         </ul>
