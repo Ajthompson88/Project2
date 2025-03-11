@@ -1,6 +1,6 @@
-import React from 'react';
+import * as React from 'react';
 import ApplicationForm from './ApplicationForm';
-import InterviewCalendar from './Calendar';
+import InterviewCalendar from './InterviewCalendar';
 import './HomePage.css';
 
 const HomePage: React.FC = () => {

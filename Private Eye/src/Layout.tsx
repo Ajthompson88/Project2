@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import * as React from 'react';
+ import { useState } from 'react';
 import { Outlet, Link } from 'react-router-dom';
 import './Header.css'; // You can use the same styles from HomePage.css or create a new CSS file
 
