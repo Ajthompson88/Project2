@@ -1,60 +1,52 @@
-import { DataTypes, Model, Optional } from 'sequelize';
+import { DataTypes, Model } from 'sequelize';
 import { sequelize } from '../config/database';
 
-// Define the attributes for the Interview model
-interface InterviewAttributes {
-    id: number;
-    date: Date;
-    time: string;
-    location: string;
-    companyId: number;
+export class Interview extends Model {
+  public id!: number;
+  public application_id!: number;
+  public interview_date!: Date;
+  public interviewer!: string;
+  public interview_notes!: string;
+  public outcome!: string;
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
-// Define the creation attributes for the Interview model
-interface InterviewCreationAttributes extends Optional<InterviewAttributes, 'id'> {}
-
-// Define the Interview model
-class Interview extends Model<InterviewAttributes, InterviewCreationAttributes> implements InterviewAttributes {
-    public id!: number;
-    public date!: Date;
-    public time!: string;
-    public location!: string;
-    public companyId!: number;
-
-    // Timestamps
-    public readonly createdAt!: Date;
-    public readonly updatedAt!: Date;
-}
-
-// Initialize the Interview model
 Interview.init(
-    {
-        id: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            autoIncrement: true,
-            primaryKey: true,
-        },
-        date: {
-            type: DataTypes.DATE,
-            allowNull: false,
-        },
-        time: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        location: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        companyId: {
-            type: DataTypes.INTEGER.UNSIGNED,
-            allowNull: false,
-        },
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      autoIncrement: true,
+      primaryKey: true,
     },
-    {
-        sequelize,
-        tableName: 'interviews',
-    }
+    application_id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    interview_date: {
+      type: DataTypes.DATE,
+      allowNull: false,
+    },
+    interviewer: {
+      type: DataTypes.STRING(255),
+      allowNull: true,
+    },
+    interview_notes: {
+      type: DataTypes.TEXT,
+      allowNull: true,
+    },
+    outcome: {
+      type: DataTypes.STRING(10),
+      allowNull: false,
+      defaultValue: 'Pending',
+      validate: {
+        isIn: [['Pending', 'Passed', 'Failed']],
+      },
+    },
+  },
+  {
+    sequelize,
+    tableName: 'interviews',
+    timestamps: true,
+  }
 );
-
-export { Interview };
