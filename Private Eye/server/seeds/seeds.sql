@@ -1,5 +1,3 @@
-USE privateeye_db;
-
 -- Insert default users
 INSERT INTO users (name, email, password_hash) VALUES
 ('John Doe', 'john.doe@example.com', 'hashedpassword1'),
@@ -8,31 +6,26 @@ INSERT INTO users (name, email, password_hash) VALUES
 -- Insert default statuses
 INSERT INTO statuses (name) VALUES 
 ('Applied'), 
-('Phone Screen'), 
 ('Interviewing'), 
 ('Offer'), 
 ('Rejected');
 
 -- Insert default companies
 INSERT INTO companies (name, website, industry, location) VALUES
-('Google', 'https://www.google.com', 'Technology', 'Mountain View, CA'),
-('Amazon', 'https://www.amazon.com', 'E-commerce', 'Seattle, WA'),
-('Microsoft', 'https://www.microsoft.com', 'Technology', 'Redmond, WA');
+('Tech Corp', 'https://techcorp.com', 'Technology', 'San Francisco, CA'),
+('Health Inc', 'https://healthinc.com', 'Healthcare', 'New York, NY');
 
 -- Insert job applications
 INSERT INTO applications (user_id, company_id, job_title, job_description, job_link, status_id, applied_date) VALUES
-(1, 1, 'Software Engineer', 'Develop web applications using JavaScript and Python.', 'https://careers.google.com', 1, '2024-02-01'),
-(1, 2, 'Data Analyst', 'Analyze and interpret complex data to help decision-making.', 'https://www.amazon.jobs', 2, '2024-02-05'),
-(2, 3, 'Product Manager', 'Lead the development of innovative software solutions.', 'https://careers.microsoft.com', 1, '2024-02-10');
+(1, 1, 'Software Engineer', 'Develop and maintain software applications.', 'https://techcorp.com/jobs/1', 1, '2025-03-01'),
+(2, 2, 'Data Analyst', 'Analyze and interpret complex data sets.', 'https://healthinc.com/jobs/2', 2, '2025-03-02');
 
 -- Insert notes
 INSERT INTO notes (application_id, user_id, note) VALUES
-(1, 1, 'Sent follow-up email after applying.'),
-(2, 1, 'Had a phone screen, waiting for next round.'),
-(3, 2, 'Need to prepare a case study for the interview.');
+(1, 1, 'Followed up with recruiter.'),
+(2, 2, 'Scheduled interview for next week.');
 
 -- Insert interview records
 INSERT INTO interviews (application_id, interview_date, interviewer, interview_notes, outcome) VALUES
-(2, '2024-02-12 10:00:00', 'Alice Johnson', 'Discussed SQL and data visualization techniques.', 'Pending'),
-(3, '2024-02-15 14:30:00', 'Bob Smith', 'Behavioral questions and leadership scenarios.', 'Pending');
-
+(1, '2025-03-05 10:00:00', 'Alice Johnson', 'Technical interview went well.', 'Pending'),
+(2, '2025-03-06 14:00:00', 'Bob Brown', 'Behavioral interview was challenging.', 'Pending');
