@@ -1,14 +1,19 @@
-import express, { Request, Response } from 'express';
-import { Company } from '../models';
+import { Router, Request, Response } from 'express';
+import { Company } from '../models/company';
 
-const router = express.Router();
+const router = Router();
 
 // Get all companies
 router.get('/', async (req: Request, res: Response): Promise<void> => {
     try {
         const companies = await Company.findAll();
         res.json(companies);
-    } catch (error: any) {
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
         res.status(500).json({ error: error.message });
     }
 });
@@ -18,11 +23,16 @@ router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const company = await Company.findByPk(req.params.id);
         if (!company) {
-            return res.status(404).json({ error: 'Company not found' });
+            res.status(404).json({ error: 'Company not found' });
+            return;
         }
         res.json(company);
-    } catch (error: any) {
-        res.status(500).json({ error: error.message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 

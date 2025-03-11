@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Interview } from '../models';
+import { Interview } from '../models/interview';
 
 // Get all interviews
 export const getAllInterviews = async (req: Request, res: Response): Promise<void> => {
@@ -11,17 +11,22 @@ export const getAllInterviews = async (req: Request, res: Response): Promise<voi
     }
 };
 
-// Get interview by ID
+// Get Interview by ID
 export const getInterviewById = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const interview = await Interview.findByPk(req.params.id);
-        if (!interview) {
-            return res.status(404).json({ error: 'Interview not found' });
-        }
-        res.json(interview);
-    } catch (error: any) {
-        res.status(500).json({ error: error.message });
+  try {
+    const interview = await Interview.findByPk(req.params.id);
+    if (!interview) {
+      res.status(404).json({ error: 'Interview not found' });
+      return;
     }
+    res.json(interview);
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      res.status(500).json({ error: error.message });
+    } else {
+      res.status(500).json({ error: 'An unknown error occurred' });
+    }
+  }
 };
 
 // Create interview

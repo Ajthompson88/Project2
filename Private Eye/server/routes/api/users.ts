@@ -1,7 +1,7 @@
-import express, { Request, Response } from 'express';
-import { User } from '../models';
+import { Router, Request, Response } from 'express';
+import { User } from '../models/user';
 
-const router = express.Router();
+const router = Router();
 
 // Register User
 router.post('/register', async (req: Request, res: Response) => {
@@ -14,35 +14,56 @@ router.post('/register', async (req: Request, res: Response) => {
 });
 
 // Get User by ID
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const user = await User.findByPk(req.params.id);
-        if (!user) return res.status(404).json({ error: 'User not found' });
+        if (!user) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
         res.json(user);
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 
 // Update User
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const [updated] = await User.update(req.body, { where: { id: req.params.id } });
-        if (!updated) return res.status(404).json({ error: 'User not found' });
+        if (!updated) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
         res.json({ message: 'User updated successfully' });
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 
 // Delete User
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const deleted = await User.destroy({ where: { id: req.params.id } });
-        if (!deleted) return res.status(404).json({ error: 'User not found' });
+        if (!deleted) {
+            res.status(404).json({ error: 'User not found' });
+            return;
+        }
         res.json({ message: 'User deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 

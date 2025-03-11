@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
-import { User, Interview } from '../models';
+import { User } from '../models';
+import { Interview } from '../models/interview';
 
 const router = express.Router();
 
@@ -57,35 +58,56 @@ router.post('/register', async (req: Request, res: Response) => {
 });
 
 // Get Interview by ID
-router.get('/:id', async (req: Request, res: Response) => {
+router.get('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const interview = await Interview.findByPk(req.params.id);
-        if (!interview) return res.status(404).json({ error: 'Interview not found' });
+        if (!interview) {
+            res.status(404).json({ error: 'Interview not found' });
+            return;
+        }
         res.json(interview);
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 
 // Update Interview
-router.put('/:id', async (req: Request, res: Response) => {
+router.put('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const [updated] = await Interview.update(req.body, { where: { id: req.params.id } });
-        if (!updated) return res.status(404).json({ error: 'Interview not found' });
+        if (!updated) {
+            res.status(404).json({ error: 'Interview not found' });
+            return;
+        }
         res.json({ message: 'Interview updated successfully' });
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 
 // Delete Interview
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const deleted = await Interview.destroy({ where: { id: req.params.id } });
-        if (!deleted) return res.status(404).json({ error: 'Interview not found' });
+        if (!deleted) {
+            res.status(404).json({ error: 'Interview not found' });
+            return;
+        }
         res.json({ message: 'Interview deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 

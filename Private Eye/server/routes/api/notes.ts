@@ -1,7 +1,7 @@
-import express, { Request, Response } from 'express';
-import { Note } from '../models';
+import { Router, Request, Response } from 'express';
+import { Note } from '../models/note';
 
-const router = express.Router();
+const router = Router();
 
 // Get notes for an application
 router.get('/applications/:id', async (req: Request, res: Response) => {
@@ -24,13 +24,20 @@ router.post('/applications/:id', async (req: Request, res: Response) => {
 });
 
 // Delete a note
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', async (req: Request, res: Response): Promise<void> => {
     try {
         const deleted = await Note.destroy({ where: { id: req.params.id } });
-        if (!deleted) return res.status(404).json({ error: 'Note not found' });
+        if (!deleted) {
+            res.status(404).json({ error: 'Note not found' });
+            return;
+        }
         res.json({ message: 'Note deleted successfully' });
-    } catch (error) {
-        res.status(500).json({ error: (error as Error).message });
+    } catch (error: unknown) {
+        if (error instanceof Error) {
+            res.status(500).json({ error: error.message });
+        } else {
+            res.status(500).json({ error: 'An unknown error occurred' });
+        }
     }
 });
 
