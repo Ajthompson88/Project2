@@ -1,5 +1,5 @@
 import React from 'react';
-import InterviewCalendar from './Calendar';
+import InterviewCalendar from './InterviewCalendar';
 import './CalendarPage.css';
 
 const CalendarPage: React.FC = () => {
