@@ -28,10 +28,7 @@ const InterviewCalendar: React.FC = () => {
   }, [interviewEvents]);
 
   // onDateChange callback with "any" type for value to bypass type issues
-  const onDateChange = (
-    value: any,
-    event?: React.MouseEvent<HTMLButtonElement, MouseEvent>
-  ) => {
+  const onDateChange = (value: any) => {
     if (value instanceof Date) {
       setSelectedDate(value);
       setShowForm(true);
@@ -87,6 +84,10 @@ const InterviewCalendar: React.FC = () => {
     return null;
   };
 
+  const handleClick = () => {
+    // Handle click event
+  };
+
   return (
     <div className="interview-calendar">
       <h2>Interview Calendar</h2>
@@ -136,6 +137,7 @@ const InterviewCalendar: React.FC = () => {
           </ul>
         )}
       </div>
+      <button onClick={handleClick}>Click me</button>
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Company } from '../models/company.ts';
+import { Company } from '../models/company';
 
 // Get Company by ID
 export const getCompanyById = async (req: Request, res: Response): Promise<void> => {

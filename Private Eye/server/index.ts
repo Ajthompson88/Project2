@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import apiRoutes from './routes/api/index';
+import apiRoutes from './routes/api/index.ts';
 
 dotenv.config();
 

@@ -5,10 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b tsconfig.app.json && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "server": "ts-node server/index.ts"
+    "server": "node --loader ts-node/esm server/index.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
