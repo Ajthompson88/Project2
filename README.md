@@ -91,9 +91,9 @@ Here are the npm packages you will need to set up the application.
 7. Additional Features (if applicable)
 
 * Highlight special features such as:
-** Visual dashboards
-** Calendar integration
-** Notes for interviews or contacts
+* Visual dashboards
+* Calendar integration
+* Notes for interviews or contacts
 
 8. Troubleshooting
 
